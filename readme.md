@@ -9,7 +9,7 @@ Target OS is LINUX with I2C module loaded. Currently only tested on Rasberry PI.
 - DS2408
 
 
-## Code Example
+## Get started. Search your devices.
 
 ```js
 var w1direct = require('w1direct');
@@ -25,4 +25,25 @@ w1.registerDS2482Master({
 
 console.log(w1.syncAllDevices());
 
+{ added:
+   [ { id: '104C3D7101080061',
+       state: 'ready',
+       master: 'i2c-1',
+       bus: 0,
+       crcError: false },
+     { id: '28E445AA040000FC',
+       state: 'ready',
+       master: 'i2c-1',
+       bus: 0,
+       crcError: false }],
+  
+  updated: [],
+  removed: []}
+
+
 ```
+
+
+## API
+
+Comming soon
