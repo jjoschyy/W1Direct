@@ -46,4 +46,9 @@ console.log(w1.syncAllDevices());
 
 ## API
 
-Comming soon
+Comming soon...
+
+
+## License
+
+MIT
