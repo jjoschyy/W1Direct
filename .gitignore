@@ -1,0 +1,8 @@
+# Deployment #
+######################
+deploy/*
+
+# Project files #
+######################
+.cproject
+.project
