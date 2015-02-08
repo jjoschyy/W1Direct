@@ -1,10 +1,30 @@
 ## Synopsis
 
-At the top of the file there should be a short introduction and/ or overview that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)
+NodeJS Addon for simple usage of 1wire over I2C and DS2482-100 and DS2482-800 master. Multiple masters and overdrive speed is supported. 
+
+Target OS is LINUX with I2C module loaded. Currently only tested on Rasberry PI. The following devices are supported:
+
+- DS18b20
+- DS18s20
+- DS2408
+
 
 ## Code Example
 
-Show what the library does as concisely as possible, developers should be able to figure out **how** your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise.
+```js
+var w1direct = require('w1direct');
+
+w1 = new w1direct.Manager();
+
+w1.registerDS2482Master({
+	name	  : 'i2c-1',
+	subType   : '100',
+	devFile	  : '/dev/i2c-1',
+	address	  : 0x18
+});
+
+console.log(w1.syncAllDevices());
+
 
 ## Motivation
 
@@ -16,7 +36,9 @@ Provide code examples and explanations of how to get the project.
 
 ## API Reference
 
-Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
+Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. 
+
+For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
 
 ## Tests
 
