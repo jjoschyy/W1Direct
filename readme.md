@@ -76,13 +76,13 @@ w1.readDevicesById({fields:['values', 'properties'], deviceIds:['104C3D710108006
 This returns:
 
 ```js
-{ '104C3D7101080061':		//DS18s20
+{ '104C3D7101080061':		//DS18S20
    { ioSpeed: 'standard',
      resolution: '12bit',
      powerSupply: true,
      tCelsius: '85.0',
      crcError: false },
-  '28E445AA040000FC':		//DS18b20
+  '28E445AA040000FC':		//DS18B20
    { ioSpeed: 'standard',
      resolution: '12bit',
      powerSupply: true,
@@ -117,9 +117,19 @@ w1.updateDeviceById({deviceId:'DEVICE_ID', set:'KEY', value:'VALUE'})
 ```
 
 
-## DS18S20 and DS18B20 updates
+## DS18S20 and DS18B20
+#  Values and properties
 
-Possible updates are:
+```js 	
+ { ioSpeed	   : 'standard', //property
+   resolution  : '12bit',    //property
+   powerSupply : true,       //property
+   tCelsius	   : '85.0'  	 //value   
+ }
+```
+
+
+# Updates
 
 ```js
 w1.updateDeviceById({deviceId:'DEVICEID', set:'resolution', value:'9bit'})
@@ -128,7 +138,7 @@ w1.updateDeviceById({deviceId:'DEVICEID', set:'resolution', value:'11bit'})
 w1.updateDeviceById({deviceId:'DEVICEID', set:'resolution', value:'12bit'})
 ```
 
-A higher resolution will give you more decimal values. The possible decimals are: 
+A higher resolution will give you more decimal values. For the DS18S20 the decimals are interpolated. The possible decimals are: 
 
 ```js
 {
@@ -142,12 +152,50 @@ A higher resolution will give you more decimal values. The possible decimals are
 The calculation delays are:
 
 ```js
-{		  //DS18B20, DS18S20
-  "9bit":  [50ms, 	 100ms],
-  "10bit": [50ms, 	 100ms],
-  "11bit": [50ms, 	 100ms],
-  "12bit": [50ms, 	 100ms]
+{		  //DS18S20, DS18B20
+  "9bit":  [750ms,   94ms],
+  "10bit": [750ms,   188ms],
+  "11bit": [750ms,   375ms],
+  "12bit": [750ms,   750ms]
 }
+```
+
+
+## DS2408
+#  Values and properties
+
+```js
+{ 	ioSpeed     : 'standard',   //property
+    rstzPinMode : 'resetInput', //property
+    powerSupply : true,         //property  
+    pioInput    : { hex: '0x1f', decimal: 31,  binary: '00011111' },  //value
+    pioOutput   : { hex: '0xff', decimal: 255, binary: '11111111' },  //value
+    pioActivity : { hex: '0x00', decimal: 0,   binary: '00000000' }   //value
+}
+```
+
+#  Updates
+
+```js
+//Communication speed
+w1.updateDeviceById({deviceId:'DEVICEID', set:'ioSpeed', value:'standard'})
+w1.updateDeviceById({deviceId:'DEVICEID', set:'ioSpeed', value:'overdrive'})
+
+//The RSTZ pin can be RESET input or STROBE output
+w1.updateDeviceById({deviceId:'DEVICEID', set:'rstzPinMode', value:'strobeOutput'})
+w1.updateDeviceById({deviceId:'DEVICEID', set:'rstzPinMode', value:'resetInput'})
+
+//Sets the PIO output to 0xff and 0xbb
+w1.updateDeviceById({deviceId:'DEVICEID', set:'pioOutput', value:'0xff'})
+w1.updateDeviceById({deviceId:'DEVICEID', set:'pioOutput', value:'0xbb'})
+
+//Sets PIO Pin 0 to 1 and Pin 2 to 0
+w1.updateDeviceById({deviceId:'DEVICEID', set:'pioOutputPort', value:'p0,1'})
+w1.updateDeviceById({deviceId:'DEVICEID', set:'pioOutputPort', value:'p2,0'})
+
+//Reset the activity latch
+w1.updateDeviceById({deviceId:'DEVICEID', set:'pioActivity', value:'0x00'})
+
 ```
 
 
