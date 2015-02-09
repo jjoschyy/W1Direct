@@ -118,7 +118,7 @@ w1.updateDeviceById({deviceId:'DEVICE_ID', set:'KEY', value:'VALUE'})
 
 
 ## DS18S20 and DS18B20
-###  Values and properties
+### Read values and properties
 
 ```js 	
  { ioSpeed	   : 'standard', //property
@@ -162,7 +162,7 @@ The calculation delays are:
 
 
 ## DS2408
-###  Values and properties
+###  Read values and properties
 
 ```js
 { 	ioSpeed     : 'standard',   //property
@@ -196,6 +196,47 @@ w1.updateDeviceById({deviceId:'DEVICEID', set:'pioOutputPort', value:'p2,0'})
 //Reset the activity latch
 w1.updateDeviceById({deviceId:'DEVICEID', set:'pioActivity', value:'0x00'})
 
+```
+
+
+##  Examples
+### Read current temperature of DS18B20
+
+```js
+
+var w1direct = require('w1direct');
+
+w1 = new w1direct.Manager();
+
+w1.registerDS2482Master({
+   name      : 'MASTER1',
+   subType   : '100',
+   devFile   : '/dev/i2c-1',
+   address   : 0x18
+});
+
+//search
+w1.syncAllDevices()
+
+//inital setup
+w1.updateDeviceById({deviceId:"28E445AA040000FC", set:'resolution', value:'12bit'})
+
+//broadcast
+w1.broadcastBusCommand({masterName:'MASTER1', busNumber:0, command:"convertTemperature"})
+
+//Read after 750ms in 12bit. During the 750ms other devices could be read. 
+setTimeout(function() {
+  result = w1.readDevicesById({fields:['values'], deviceIds:['28E445AA040000FC']})
+  console.log(result)
+}, 750);
+
+
+```
+
+Result:
+
+```js
+{ '28E445AA040000FC': { tCelsius: '25.6875', crcError: false } }
 ```
 
 
