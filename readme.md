@@ -31,13 +31,13 @@ var w1direct = require('w1direct');
 w1 = new w1direct.Manager();
 w1.registerDS2482Master({
 	name	  : 'i2c-1',        // Any name for later outputs
-	subType   : '100',          // 100 or 800 for ds2408-100/800
-	devFile	  : '/dev/i2c-1',   // The device file
-	address	  : 0x18            // The address (shown in i2cdetect)
+	subType   : '100',          // 100 or 800 for ds2482-100/800
+	devFile	  : '/dev/i2c-1',   // The I2C device file
+	address	  : 0x18            // The I2C master address (shown in i2cdetect)
 });
 
 ```
-## Search your devices
+## Search devices
 Just execute:
 ```js
 w1.syncAllDevices();
@@ -65,7 +65,7 @@ This returns the JSON below. If you do this action again, all devices will retur
   removed: []}
 ```
 
-## Read your devices
+## Read devices
 There are two possible types. The first is called "values", which holds values e.g. temperature. The second type is called "properties", which shows internal device properties. Reading both types needs more time. So normally you should only use the type you need.
 
 Moreover, you can define multiple devices for read. Internally, this is performance optimized. So standard speed devices are read first. Afterwards the bus is switched to overdrive speed and all other devices are read.
@@ -97,6 +97,12 @@ This returns:
      pioActivity: { hex: '0x00', decimal: 0, binary: '00000000' },
      crcError: false } }
 ```
+
+
+## Broadcast devices
+In the result above, the temperature is "85.0". This is quite hot :-) To get the right temperature, each device has to calculate the right value, first.      
+
+
 
 ## License
 
