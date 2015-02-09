@@ -118,7 +118,7 @@ w1.updateDeviceById({deviceId:'DEVICE_ID', set:'KEY', value:'VALUE'})
 
 
 ## DS18S20 and DS18B20
-#  Values and properties
+###  Values and properties
 
 ```js 	
  { ioSpeed	   : 'standard', //property
@@ -129,7 +129,7 @@ w1.updateDeviceById({deviceId:'DEVICE_ID', set:'KEY', value:'VALUE'})
 ```
 
 
-# Updates
+### Updates
 
 ```js
 w1.updateDeviceById({deviceId:'DEVICEID', set:'resolution', value:'9bit'})
@@ -162,7 +162,7 @@ The calculation delays are:
 
 
 ## DS2408
-#  Values and properties
+###  Values and properties
 
 ```js
 { 	ioSpeed     : 'standard',   //property
@@ -174,7 +174,7 @@ The calculation delays are:
 }
 ```
 
-#  Updates
+###  Updates
 
 ```js
 //Communication speed
