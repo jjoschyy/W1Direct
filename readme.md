@@ -30,7 +30,7 @@ var w1direct = require('w1direct');
 
 w1 = new w1direct.Manager();
 w1.registerDS2482Master({
-	name	  : 'i2c-1',        // Any name for later outputs
+	name	  : 'MASTER1',      // Any name for later outputs
 	subType   : '100',          // 100 or 800 for ds2482-100/800
 	devFile	  : '/dev/i2c-1',   // The I2C device file
 	address	  : 0x18            // The I2C master address (shown in i2cdetect)
@@ -47,17 +47,17 @@ This returns the JSON below. If you do this action again, all devices will retur
 { added:
    [{ id: '104C3D7101080061',	//DS18s20
       state: 'ready',
-      master: 'i2c-1',
+      master: 'MASTER1',
       bus: 0,
       crcError: false },
     { id: '28E445AA040000FC',	//DS18b20
       state: 'ready',
-      master: 'i2c-1',
+      master: 'MASTER1',
       bus: 0,
       crcError: false },
     { id: '29AD5712000000CE',	//DS2408
       state: 'ready',
-      master: 'i2c-1',
+      master: 'MASTER1',
       bus: 0,
       crcError: false }],
   
@@ -100,8 +100,13 @@ This returns:
 
 
 ## Broadcast devices
-In the result above, the temperature is "85.0". This is quite hot :-) To get the right temperature, each device has to calculate the right value, first.      
+In the result above, the temperature is "85.0". This is quite hot :-) To read the right temperature, each device has to calculate the temperature first. To start this calculation, a "broadcast" command can be send:
 
+```js
+w1.broadcastBusCommand({masterName:'MASTER1', busNumber:0, command:"convertTemperature"})     
+```
+
+After the command is send, all devices on the specified Master/Bus start to build a memory entry with the current temperature. After a short delay, (depends on the device resolution) the correct temperature can be read.
 
 
 ## License
