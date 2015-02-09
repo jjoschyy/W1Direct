@@ -1,6 +1,6 @@
 {
   "name": "w1direct",
-  "version": "0.6.1",
+  "version": "0.6.3",
   "description": "Native OneWire access for NodeJS over I2C and DS2482 with multiple master support.",
   "main": "build/Release/w1direct",
   "gypfile": true

@@ -240,7 +240,8 @@ Result:
 { '28E445AA040000FC': { tCelsius: '25.6875', crcError: false } }
 ```
 
+##  Tests
+This lib is fully tested using jasmine-node. Please have look into the "test" folder for more information.
 
 ## License
-
 MIT
