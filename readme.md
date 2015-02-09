@@ -4,8 +4,8 @@ NodeJS Addon for simple usage of 1wire over I2C and DS2482-100 and DS2482-800 ma
 
 Target OS is LINUX with I2C module loaded. Currently only tested on Rasberry PI. The following devices are supported:
 
-- DS18s20
-- DS18b20
+- DS18S20
+- DS18B20
 - DS2408
 
 
@@ -45,12 +45,12 @@ w1.syncAllDevices();
 This returns the JSON below. If you do this action again, all devices will return inside the "updated" key.
 ```js
 { added:
-   [{ id: '104C3D7101080061',	//DS18s20
+   [{ id: '104C3D7101080061',	//DS18S20
       state: 'ready',
       master: 'MASTER1',
       bus: 0,
       crcError: false },
-    { id: '28E445AA040000FC',	//DS18b20
+    { id: '28E445AA040000FC',	//DS18B20
       state: 'ready',
       master: 'MASTER1',
       bus: 0,
@@ -106,7 +106,49 @@ In the result above, the temperature is "85.0". This is quite hot :-) To read th
 w1.broadcastBusCommand({masterName:'MASTER1', busNumber:0, command:"convertTemperature"})     
 ```
 
-After the command is send, all devices on the specified Master/Bus start to build a memory entry with the current temperature. After a short delay, (depends on the device resolution) the correct temperature can be read.
+After the command is send, all devices on the specified Master/Bus start to build a memory entry with the current temperature. After a delay, the correct temperature can be read. The delays are different for each device and resolution. Details are shown below in the device section. 
+
+
+## Update devices
+For each device, there are some possible updates. Details are shown below in the device section.
+
+```js
+w1.updateDeviceById({deviceId:'DEVICE_ID', set:'KEY', value:'VALUE'})
+```
+
+
+## DS18S20 and DS18B20 updates
+
+Possible updates are:
+
+```js
+w1.updateDeviceById({deviceId:'DEVICEID', set:'resolution', value:'9bit'})
+w1.updateDeviceById({deviceId:'DEVICEID', set:'resolution', value:'10bit'})
+w1.updateDeviceById({deviceId:'DEVICEID', set:'resolution', value:'11bit'})
+w1.updateDeviceById({deviceId:'DEVICEID', set:'resolution', value:'12bit'})
+```
+
+A higher resolution will give you more decimal values. The possible decimals are: 
+
+```js
+{
+  "9bit":  [0,                                                     0.5                                                    ]
+  "10bit": [0,                        0.25,                        0.5,                        0.75                       ]
+  "11bit": [0,         0.125,         0.25,         0.375,         0.5,         0.625,         0.75,         0.875        ]
+  "12bit": [0, 0.0625, 0.125, 0.1875, 0.25, 0.3125, 0.375, 0.4375, 0.5, 0.5625, 0.625, 0.6875, 0.75, 0.8125, 0.875, 0.9375]
+}
+```
+
+The calculation delays are:
+
+```js
+{		  //DS18B20, DS18S20
+  "9bit":  [50ms, 	 100ms],
+  "10bit": [50ms, 	 100ms],
+  "11bit": [50ms, 	 100ms],
+  "12bit": [50ms, 	 100ms]
+}
+```
 
 
 ## License
