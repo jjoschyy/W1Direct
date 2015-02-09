@@ -129,7 +129,7 @@ w1.updateDeviceById({deviceId:'DEVICE_ID', set:'KEY', value:'VALUE'})
 ```
 
 
-### Updates
+### Update
 
 ```js
 w1.updateDeviceById({deviceId:'DEVICEID', set:'resolution', value:'9bit'})
@@ -174,7 +174,7 @@ The calculation delays are:
 }
 ```
 
-###  Updates
+###  Update
 
 ```js
 //Communication speed
@@ -229,6 +229,7 @@ setTimeout(function() {
   result = w1.readDevicesById({fields:['values'], deviceIds:['28E445AA040000FC']})
   console.log(result)
 }, 750);
+
 
 
 ```
