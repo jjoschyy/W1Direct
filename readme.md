@@ -10,14 +10,14 @@ NodeJS addon for simple usage of 1wire over I2C and DS2482-100/800 master. Multi
 ## Prerequisites
 ### Load the kernel drivers
 On Rasberry Pi, the following steps are required: 
-- Comment out "i2c-dev" and "i2c-bcm2708" inside /etc/modprobe.d/raspi-blacklist.conf 
+- Comment out <b>i2c-dev</b> and <b>i2c-bcm2708</b> inside /etc/modprobe.d/raspi-blacklist.conf 
 - Add to "/etc/modules" i2c-dev 
 - Add to "/etc/modules" i2c-bcm2708
 - Reboot your system
 
 
 ### Check if your masters can be found on I2C
-Using i2cdetect, the addresses of all DS2482 should be shown:
+Using <b>i2cdetect</b>, the addresses of all DS2482 should be shown:
  - i2cdetect -y 0
  - i2cdetect -y 1
 
@@ -38,14 +38,14 @@ npm install w1direct
 
 
 ## Register your masters
-You can register 1..n masters using the "registerDS2482Master" function:
+You can register 1..n masters using the <b>registerDS2482Master</b> function:
 
 ```js
 var w1direct = require('w1direct');
 
 w1 = new w1direct.Manager();
 w1.registerDS2482Master({
-	name	  : 'MASTER1',      // Any name for later outputs
+	name	  : 'MASTER1',      // Any name for later master access
 	subType   : '100',          // 100 or 800 for ds2482-100/800
 	devFile	  : '/dev/i2c-1',   // The I2C device file
 	address	  : 0x18            // The I2C master address (shown in i2cdetect)
@@ -81,39 +81,39 @@ This returns the JSON below. If you do this action again, all devices will retur
 ```
 
 ## Read devices
-There are two possible types. The first is called "values", which holds values e.g. temperature. The second type is called "properties", which shows internal device properties. Reading both types needs more time. So normally you should only use the type you need.
+There are two possible types. The first is called <b>values</b>, which holds values e.g. temperature. The second type is called <b>properties</b>, which shows internal device properties. Reading both types needs more time. So normally you should only use the type you need.
 
 Moreover, you can define multiple devices for read. Internally, this is performance optimized. So standard speed devices are read first. Afterwards the bus is switched to overdrive speed and all other devices are read.
 
 ```js
 w1.readDevicesById({
-   fields:['values', 'properties'], 
+   fields   :['values', 'properties'], 
    deviceIds:['104C3D7101080061', '28E445AA040000FC', '29AD5712000000CE']
 )}
 ```
 This returns:
 
 ```js
-{ '104C3D7101080061':		//DS18S20
-   { ioSpeed: 'standard',
-     resolution: '12bit',
-     powerSupply: true,
-     tCelsius: '85.0',
-     crcError: false },
-  '28E445AA040000FC':		//DS18B20
-   { ioSpeed: 'standard',
-     resolution: '12bit',
-     powerSupply: true,
-     tCelsius: '85.0',
-     crcError: false },
-  '29AD5712000000CE':		//DS2408
-   { ioSpeed: 'standard',
-     rstzPinMode: 'resetInput',
-     powerSupply: true,
-     pioInput: { hex: '0x1f', decimal: 31, binary: '00011111' },
-     pioOutput: { hex: '0xff', decimal: 255, binary: '11111111' },
-     pioActivity: { hex: '0x00', decimal: 0, binary: '00000000' },
-     crcError: false } }
+{ '104C3D7101080061': //DS18S20
+   { ioSpeed	 : 'standard',
+     resolution	 : '12bit',
+     powerSupply : true,
+     tCelsius	 : '85.0',
+     crcError	 : false },
+  '28E445AA040000FC': //DS18B20
+   { ioSpeed	 : 'standard',
+     resolution	 : '12bit',
+     powerSupply : true,
+     tCelsius	 : '85.0',
+     crcError	 : false },
+  '29AD5712000000CE': //DS2408
+   { ioSpeed	 : 'standard',
+     rstzPinMode : 'resetInput',
+     powerSupply : true,
+     pioInput	 : { hex: '0x1f', decimal: 31,  binary: '00011111' },
+     pioOutput	 : { hex: '0xff', decimal: 255, binary: '11111111' },
+     pioActivity : { hex: '0x00', decimal: 0,   binary: '00000000' },
+     crcError	 : false } }
 ```
 
 
@@ -121,7 +121,11 @@ This returns:
 In the result above, the temperature is "85.0". This is quite hot :-) To read the right temperature, each device has to calculate the temperature first. To start this calculation, a "broadcast" command can be send:
 
 ```js
-w1.broadcastBusCommand({masterName:'MASTER1', busNumber:0, command:"convertTemperature"})     
+w1.broadcastBusCommand({
+	masterName : 'MASTER1', 
+	busNumber  : 0, 
+	command    : "convertTemperature"}
+)     
 ```
 
 After the command is send, all devices on the specified Master/Bus start to build a memory entry with the current temperature. After a delay, the correct temperature can be read. The delays are different for each device and resolution. Details are shown below in the device section. 
