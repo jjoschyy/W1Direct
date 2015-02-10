@@ -57,7 +57,7 @@ Just execute:
 ```js
 w1.syncAllDevices();
 ```
-This searches search on <b>all</b> registered masters for devices. If you do this action again, all devices will return inside the <b>updated</b> key. If a device is removed, it will be shown once inside the <b>removed</b> key.
+This starts a new search on <b>all</b> registered masters for devices and returns an object like shown below. If you execute the search again, all devices will return inside the <b>updated</b> key. If a device is removed, it will be shown once inside the <b>removed</b> key.
 ```js
 { added:
    [{ id	   : '104C3D7101080061', //DS18S20
@@ -79,7 +79,7 @@ This searches search on <b>all</b> registered masters for devices. If you do thi
   removed: [] }
 ```
 
-Searching all masters with their devices can be a long action. For a faster search, you can use one of the following functions:
+Searching all masters/buses can be a long action. For a faster search, you can use one of the following functions:
 
 ```js
 w1.syncMasterDevices({masterName:'MASTER1'})  			//Search on MASTER1 all buses
