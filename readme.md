@@ -57,7 +57,7 @@ Just execute:
 ```js
 w1.syncAllDevices();
 ```
-This returns the JSON below. If you do this action again, all devices will return inside the "updated" key.
+This returns the JSON below. If you do this action again, all devices will return inside the <b>updated</b> key.
 ```js
 { added:
    [{ id	   : '104C3D7101080061', //DS18S20
@@ -76,7 +76,8 @@ This returns the JSON below. If you do this action again, all devices will retur
       bus      : 0,
       crcError : false }],
   updated: [],
-  removed: []}
+  removed: []
+}
 ```
 
 ## Read devices
@@ -112,7 +113,8 @@ This returns:
      pioInput	 : { hex: '0x1f', decimal: 31,  binary: '00011111' },
      pioOutput	 : { hex: '0xff', decimal: 255, binary: '11111111' },
      pioActivity : { hex: '0x00', decimal: 0,   binary: '00000000' },
-     crcError	 : false } }
+     crcError	 : false }
+}
 ```
 
 
@@ -123,8 +125,8 @@ In the result above, the temperature is "85.0". This is quite hot :-) To read th
 w1.broadcastBusCommand({
 	masterName : 'MASTER1', 
 	busNumber  : 0, 
-	command    : "convertTemperature"}
-)     
+	command    : "convertTemperature"
+})     
 ```
 
 After the command is send, all devices on the specified Master/Bus start to build a memory entry with the current temperature. After a delay, the correct temperature can be read. The delays are different for each device and resolution. Details are shown below in the device section. 
@@ -142,11 +144,12 @@ w1.updateDeviceById({deviceId:'DEVICE_ID', set:'KEY', value:'VALUE'})
 ### Read returns
 
 ```js 	
- { ioSpeed	   : 'standard', //property
-   resolution  : '12bit',    //property
-   powerSupply : true,       //property
-   tCelsius	   : '85.0'  	 //value   
- }
+{ 
+  ioSpeed	  : 'standard', //property
+  resolution  : '12bit',    //property
+  powerSupply : true,       //property
+  tCelsius	  : '85.0'  	 //value   
+}
 ```
 
 
@@ -186,7 +189,8 @@ The calculation delays are:
 ###  Read returns
 
 ```js
-{ 	ioSpeed     : 'standard',   //property
+{ 	
+	ioSpeed     : 'standard',   //property
     rstzPinMode : 'resetInput', //property
     powerSupply : true,         //property  
     pioInput    : { hex: '0x1f', decimal: 31,  binary: '00011111' },  //value
