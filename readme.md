@@ -10,25 +10,24 @@ NodeJS addon for simple usage of 1wire over I2C and DS2482-100/800 master. Multi
 ## Prerequisites
 ### Load the kernel drivers
 On Rasberry Pi, the following steps are required: 
-- Check /etc/modprobe.d/raspi-blacklist.conf for "i2c-dev" and "i2c-bcm2708". Remove or comment out these lines.
-- Add to "/etc/modules"
-	- "i2c-dev"
-	- "i2c-bcm2708"
+- Comment out "i2c-dev" and "i2c-bcm2708" inside /etc/modprobe.d/raspi-blacklist.conf 
+- Add to "/etc/modules" i2c-dev 
+- Add to "/etc/modules" i2c-bcm2708
 - Reboot your system
 
-### Check if the DS2482 can be found
-Using i2cdetect, the address of the DS2482 should be shown:
+
+### Check if your masters can be found on I2C
+Using i2cdetect, the addresses of all DS2482 should be shown:
  - i2cdetect -y 0
  - i2cdetect -y 1
 
 
-
 ## Install the package
-Because the package is written in C++, it has to be compiled first. Node is doing this automatically using node-gyp. To run node-gyp, the following tools have to be installed: 
-
-- python (v2.7 recommended)
-- make
-- GCC
+Because the package is written in C++, it has to be compiled first. To get this working, install:  
+ - node-gyp (npm install -g node-gyp)
+ - python (v2.7 recommended)
+ - make
+ - GCC
 
 
 Then just execute:
@@ -87,7 +86,10 @@ There are two possible types. The first is called "values", which holds values e
 Moreover, you can define multiple devices for read. Internally, this is performance optimized. So standard speed devices are read first. Afterwards the bus is switched to overdrive speed and all other devices are read.
 
 ```js
-w1.readDevicesById({fields:['values', 'properties'], deviceIds:['104C3D7101080061', '28E445AA040000FC', '29AD5712000000CE']}
+w1.readDevicesById({
+   fields:['values', 'properties'], 
+   deviceIds:['104C3D7101080061', '28E445AA040000FC', '29AD5712000000CE']
+)}
 ```
 This returns:
 
@@ -134,7 +136,7 @@ w1.updateDeviceById({deviceId:'DEVICE_ID', set:'KEY', value:'VALUE'})
 
 
 ## DS18S20 and DS18B20
-### Read values and properties
+### Read returns
 
 ```js 	
  { ioSpeed	   : 'standard', //property
@@ -178,7 +180,7 @@ The calculation delays are:
 
 
 ## DS2408
-###  Read values and properties
+###  Read returns
 
 ```js
 { 	ioSpeed     : 'standard',   //property
