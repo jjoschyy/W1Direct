@@ -1,8 +1,6 @@
 ## Synopsis
 
-NodeJS Addon for simple usage of 1wire over I2C and DS2482-100 and DS2482-800 master. Multiple masters and overdrive speed is supported. 
-
-Target OS is LINUX with I2C module loaded. Currently only tested on Rasberry PI. The following devices are supported:
+NodeJS addon for simple usage of 1wire over I2C and DS2482-100/800 master. Multiple masters and overdrive speed is supported. Target OS is LINUX with I2C module loaded. Currently only tested on Rasberry PI. The following devices are supported:
 
 - DS18S20
 - DS18B20
@@ -10,12 +8,30 @@ Target OS is LINUX with I2C module loaded. Currently only tested on Rasberry PI.
 
 
 ## Prerequisites
-On Rasberry Pi, the I2C module has to be loaded. The module is called "i2c_bcm2708" and should be defined in "/etc/modules". The communication speed is 100khz by default. Because the DS2482 supports 400khz, you can increase the speed by setting "i2c_bcm2708 baudrate=400000" in "/etc/modules". 
+### Load the kernel drivers
+On Rasberry Pi, the following steps are required: 
+- Check /etc/modprobe.d/raspi-blacklist.conf for "i2c-dev" and "i2c-bcm2708". Remove or comment out these lines.
+- Add to "/etc/modules"
+	- "i2c-dev"
+	- "i2c-bcm2708"
+- Reboot your system
 
-After rebooting your system, you should be able to see your DS2482 using  i2cdetect -y 1. 
+### Check if the DS2482 can be found
+Using i2cdetect, the address of the DS2482 should be shown:
+ - i2cdetect -y 0
+ - i2cdetect -y 1
+
+
 
 ## Install the package
-Because the package is written in C++, it has to be compiled first. Node is doing this automatically using node-gyp. For installation, type:
+Because the package is written in C++, it has to be compiled first. Node is doing this automatically using node-gyp. To run node-gyp, the following tools have to be installed: 
+
+- python (v2.7 recommended)
+- make
+- GCC
+
+
+Then just execute:
 
 ```js
 npm install w1direct
