@@ -9,21 +9,21 @@ NodeJS addon for simple usage of 1wire over I2C and DS2482-100/800 master. Multi
 
 ## Prerequisites
 ### Kernel modules
-On Rasberry Pi, the following steps are required: 
+On Rasberry Pi the following steps load the required modules: 
 - Comment out <b>i2c-dev</b> and <b>i2c-bcm2708</b> inside /etc/modprobe.d/raspi-blacklist.conf 
-- Add to "/etc/modules" i2c-dev 
-- Add to "/etc/modules" i2c-bcm2708
+- Add to <b>/etc/modules</b> i2c-dev 
+- Add to <b>/etc/modules</b> i2c-bcm2708
 - Reboot your system
 
 
-### Check if your masters can be found on I2C
+### Check if your masters can be found
 Using <b>i2cdetect</b>, the addresses of all DS2482 should be shown:
  - i2cdetect -y 0
  - i2cdetect -y 1
 
 
 ## Install the package
-Because the package is written in C++, it has to be compiled first. To get this working, install:  
+Because the package is written in C++, it has to be compiled first. This requires to install:  
  - node-gyp (npm install -g node-gyp)
  - python (v2.7 recommended)
  - make
@@ -57,7 +57,7 @@ Just execute:
 ```js
 w1.syncAllDevices();
 ```
-This returns the JSON below. If you do this action again, all devices will return inside the <b>updated</b> key.
+This searches search on <b>all</b> registered masters for devices. If you do this action again, all devices will return inside the <b>updated</b> key. If a device is removed, it will be shown once inside the <b>removed</b> key.
 ```js
 { added:
    [{ id	   : '104C3D7101080061', //DS18S20
@@ -76,9 +76,16 @@ This returns the JSON below. If you do this action again, all devices will retur
       bus      : 0,
       crcError : false }],
   updated: [],
-  removed: []
-}
+  removed: [] }
 ```
+
+Searching all masters with their devices can be a long action. For a faster search, you can use one of the following functions:
+
+```js
+w1.syncMasterDevices({masterName:'MASTER1'})  			//Search on MASTER1 all buses
+w1.syncBusDevices({masterName:'MASTER1', busNumber:0})  //Search on MASTER1 bus 0
+```
+
 
 ## Read devices
 There are two possible types. The first is called <b>values</b>, which holds values e.g. temperature. The second type is called <b>properties</b>, which shows internal device properties. Reading both types needs more time. So normally you should only use the type you need.
@@ -94,7 +101,8 @@ w1.readDevicesById({
 This returns:
 
 ```js
-{ '104C3D7101080061': //DS18S20
+{ 
+  '104C3D7101080061': //DS18S20
    { ioSpeed	 : 'standard',
      resolution	 : '12bit',
      powerSupply : true,
@@ -136,7 +144,7 @@ After the command is send, all devices on the specified Master/Bus start to buil
 For each device, there are some possible updates. Details are shown below in the device section.
 
 ```js
-w1.updateDeviceById({deviceId:'DEVICE_ID', set:'KEY', value:'VALUE'})
+w1.updateDeviceById({deviceId:'DEVICEID', set:'KEY', value:'VALUE'})
 ```
 
 
@@ -153,7 +161,7 @@ w1.updateDeviceById({deviceId:'DEVICE_ID', set:'KEY', value:'VALUE'})
 ```
 
 
-### Update
+### Update options
 
 ```js
 w1.updateDeviceById({deviceId:'DEVICEID', set:'resolution', value:'9bit'})
@@ -162,13 +170,13 @@ w1.updateDeviceById({deviceId:'DEVICEID', set:'resolution', value:'11bit'})
 w1.updateDeviceById({deviceId:'DEVICEID', set:'resolution', value:'12bit'})
 ```
 
-A higher resolution will give you more decimal values. For the DS18S20 the decimals are interpolated. The possible decimals are: 
+A higher resolution will return you more decimal values. For the DS18S20 the decimals are interpolated. The possible decimals are: 
 
 ```js
 {
-  "9bit":  [0,                                                     0.5                                                    ]
-  "10bit": [0,                        0.25,                        0.5,                        0.75                       ]
-  "11bit": [0,         0.125,         0.25,         0.375,         0.5,         0.625,         0.75,         0.875        ]
+  "9bit":  [0,                                                     0.5                                                    ],
+  "10bit": [0,                        0.25,                        0.5,                        0.75                       ],
+  "11bit": [0,         0.125,         0.25,         0.375,         0.5,         0.625,         0.75,         0.875        ],
   "12bit": [0, 0.0625, 0.125, 0.1875, 0.25, 0.3125, 0.375, 0.4375, 0.5, 0.5625, 0.625, 0.6875, 0.75, 0.8125, 0.875, 0.9375]
 }
 ```
@@ -186,7 +194,7 @@ The calculation delays are:
 
 
 ## DS2408
-###  Read returns
+### Read returns
 
 ```js
 { 	
@@ -199,7 +207,7 @@ The calculation delays are:
 }
 ```
 
-###  Update
+### Update options
 
 ```js
 //Communication speed
