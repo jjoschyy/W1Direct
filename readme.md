@@ -8,7 +8,7 @@ NodeJS addon for simple usage of 1wire over I2C and DS2482-100/800 master. Multi
 
 
 ## Prerequisites
-### Load the kernel drivers
+### Kernel modules
 On Rasberry Pi, the following steps are required: 
 - Comment out <b>i2c-dev</b> and <b>i2c-bcm2708</b> inside /etc/modprobe.d/raspi-blacklist.conf 
 - Add to "/etc/modules" i2c-dev 
@@ -60,22 +60,21 @@ w1.syncAllDevices();
 This returns the JSON below. If you do this action again, all devices will return inside the "updated" key.
 ```js
 { added:
-   [{ id: '104C3D7101080061',	//DS18S20
-      state: 'ready',
-      master: 'MASTER1',
-      bus: 0,
-      crcError: false },
-    { id: '28E445AA040000FC',	//DS18B20
-      state: 'ready',
-      master: 'MASTER1',
-      bus: 0,
-      crcError: false },
-    { id: '29AD5712000000CE',	//DS2408
-      state: 'ready',
-      master: 'MASTER1',
-      bus: 0,
-      crcError: false }],
-  
+   [{ id	   : '104C3D7101080061', //DS18S20
+      state	   : 'ready',
+      master   : 'MASTER1',
+      bus	   : 0,
+      crcError : false },
+    { id       : '28E445AA040000FC', //DS18B20
+      state	   : 'ready',
+      master   : 'MASTER1',
+      bus      : 0,
+      crcError : false },
+    { id       : '29AD5712000000CE', //DS2408
+      state    : 'ready',
+      master   : 'MASTER1',
+      bus      : 0,
+      crcError : false }],
   updated: [],
   removed: []}
 ```
